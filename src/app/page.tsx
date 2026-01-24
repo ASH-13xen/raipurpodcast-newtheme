@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useRef } from "react";
@@ -35,16 +36,15 @@ export default function Home() {
           y: 0,
           duration: 1.5,
           ease: "elastic.out(1, 0.75)",
-          delay: 0.2, // Reduced delay for snappier load
+          delay: 0.2,
         },
       );
 
-      // 2. DOCKING (Adjusted Timing)
+      // 2. DOCKING
       const moveTl = gsap.timeline({
         scrollTrigger: {
           trigger: descRef.current,
           start: "top bottom",
-          // UPDATED: "center 55%" means it finishes slightly BEFORE the section hits dead center
           end: "75% 75%",
           scrub: true,
           invalidateOnRefresh: true,
@@ -76,15 +76,13 @@ export default function Home() {
             ? circleRef.current.getBoundingClientRect().height
             : 450,
         rotation: 0,
-        // UPDATED: "power2.out" feels faster/more responsive than "inOut"
         ease: "power2.out",
       });
 
-      // 3. STICKING (Synced with Docking)
+      // 3. STICKING
       const stickTl = gsap.timeline({
         scrollTrigger: {
           trigger: descRef.current,
-          // UPDATED: Must match the 'end' of the previous trigger
           start: "center 55%",
           end: "bottom top",
           scrub: true,
@@ -93,12 +91,13 @@ export default function Home() {
       });
 
       stickTl.to(logoRef.current, {
-        y: () => {
+        // FIXED: Added 'as any' to allow returning mixed types (string for relative movement)
+        y: (() => {
           if (!descRef.current) return -1000;
           const moveDistance =
             descRef.current.offsetHeight / 2 + window.innerHeight / 2;
           return `-=${moveDistance}`;
-        },
+        }) as any,
         ease: "none",
         immediateRender: false,
       });
@@ -115,7 +114,6 @@ export default function Home() {
       <div
         ref={logoRef}
         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none flex items-center justify-center"
-        // UPDATED: Responsive dimensions (80vw on mobile, 850px on desktop)
         style={{
           width: "80vw",
           maxWidth: "850px",
