@@ -8,7 +8,6 @@ import { useGSAP } from "@gsap/react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Description from "@/sections/Description";
-import VideoShowcase from "@/sections/VideoShowcase";
 import Team from "@/sections/Team";
 import Episodes from "@/sections/Episodes";
 import GuestsDirectory from "@/sections/GuestsDirectory";
