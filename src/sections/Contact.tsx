@@ -21,7 +21,7 @@ const CONTACT_LINKS = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-8 h-8"
+        className="w-6 h-6 md:w-8 md:h-8" // UPDATED: Responsive icon size
       >
         <path
           strokeLinecap="round"
@@ -38,7 +38,11 @@ const CONTACT_LINKS = [
     href: "https://wa.me/919876543210",
     isExternal: true,
     icon: (
-      <svg fill="currentColor" viewBox="0 0 24 24" className="w-8 h-8">
+      <svg
+        fill="currentColor"
+        viewBox="0 0 24 24"
+        className="w-6 h-6 md:w-8 md:h-8" // UPDATED: Responsive icon size
+      >
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
       </svg>
     ),
@@ -55,7 +59,7 @@ const CONTACT_LINKS = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-8 h-8"
+        className="w-6 h-6 md:w-8 md:h-8" // UPDATED: Responsive icon size
       >
         <path
           strokeLinecap="round"
@@ -78,7 +82,7 @@ const CONTACT_LINKS = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-8 h-8"
+        className="w-6 h-6 md:w-8 md:h-8" // UPDATED: Responsive icon size
       >
         <path
           strokeLinecap="round"
@@ -100,7 +104,6 @@ export default function Contact() {
 
   useGSAP(
     () => {
-      // We use fromTo to ensure opacity is explicitly handled
       gsap.fromTo(
         ".contact-card",
         { y: 50, opacity: 0 },
@@ -114,7 +117,7 @@ export default function Contact() {
           duration: 0.8,
           stagger: 0.1,
           ease: "power3.out",
-          clearProps: "all", // Clears inline styles after animation to prevent conflicts
+          clearProps: "all",
         },
       );
     },
@@ -124,42 +127,48 @@ export default function Contact() {
   return (
     <section
       ref={containerRef}
-      // FIXED: Added z-50 to ensure it sits on top of any previous pinned sections
-      className="w-full bg-[#867070] text-[#F5EBEB] py-24 px-6 md:px-20 relative z-50"
+      // UPDATED: Adjusted padding for mobile (py-16 px-4) vs desktop
+      className="w-full bg-[#867070] text-[#F5EBEB] py-16 px-4 md:py-24 md:px-20 relative z-50"
     >
-      <div className="mb-16 border-b border-[#F5EBEB]/20 pb-8">
-        <h2 className="text-[#D5B4B4] font-mono text-xs uppercase tracking-widest mb-2">
+      {/* HEADER */}
+      {/* UPDATED: Reduced margins for mobile */}
+      <div className="mb-8 md:mb-16 border-b border-[#F5EBEB]/20 pb-4 md:pb-8">
+        <h2 className="text-[#D5B4B4] font-mono text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">
           Get in Touch
         </h2>
-        <h3 className="text-5xl md:text-7xl font-black uppercase leading-none">
+        {/* UPDATED: Adjusted text size for mobile */}
+        <h3 className="text-4xl md:text-7xl font-black uppercase leading-none">
           Let's Connect
         </h3>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {CONTACT_LINKS.map((link) => (
           <a
             key={link.id}
             href={link.href}
-            // FIXED: Logic to open in new tab for external, same tab for system apps
             target={link.isExternal ? "_blank" : "_self"}
             rel={link.isExternal ? "noopener noreferrer" : undefined}
-            className="contact-card block group relative bg-[#F5EBEB]/5 hover:bg-[#F5EBEB] border border-[#F5EBEB]/10 rounded-2xl p-8 transition-all duration-500 ease-out hover:-translate-y-2 cursor-pointer"
+            // UPDATED: Reduced padding for mobile cards (p-6)
+            className="contact-card block group relative bg-[#F5EBEB]/5 hover:bg-[#F5EBEB] border border-[#F5EBEB]/10 rounded-xl md:rounded-2xl p-6 md:p-8 transition-all duration-500 ease-out hover:-translate-y-2 cursor-pointer"
           >
-            <div className="w-16 h-16 rounded-full bg-[#F5EBEB]/10 group-hover:bg-[#867070] flex items-center justify-center mb-6 transition-colors duration-500 text-[#F5EBEB]">
+            {/* UPDATED: Reduced circle size for mobile */}
+            <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#F5EBEB]/10 group-hover:bg-[#867070] flex items-center justify-center mb-4 md:mb-6 transition-colors duration-500 text-[#F5EBEB]">
               {link.icon}
             </div>
 
             <div>
-              <p className="text-[#D5B4B4] group-hover:text-[#867070]/60 font-mono text-xs uppercase tracking-widest mb-2 transition-colors duration-300">
+              <p className="text-[#D5B4B4] group-hover:text-[#867070]/60 font-mono text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2 transition-colors duration-300">
                 {link.label}
               </p>
-              <h4 className="text-xl md:text-2xl font-bold group-hover:text-[#867070] transition-colors duration-300 break-words leading-tight">
+              {/* UPDATED: Adjusted value text size to prevent overflow on mobile */}
+              <h4 className="text-lg md:text-2xl font-bold group-hover:text-[#867070] transition-colors duration-300 break-words leading-tight">
                 {link.value}
               </h4>
             </div>
 
-            <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0">
+            <div className="absolute top-4 right-4 md:top-6 md:right-6 opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0">
               <svg
                 width="20"
                 height="20"
@@ -167,6 +176,7 @@ export default function Contact() {
                 fill="none"
                 stroke="#867070"
                 strokeWidth="3"
+                className="w-4 h-4 md:w-5 md:h-5" // UPDATED: Responsive arrow size
               >
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
               </svg>

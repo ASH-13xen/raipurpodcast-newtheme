@@ -65,7 +65,7 @@ export default function GuestsDirectory() {
   const cursorLabelRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
-  // MOUSE TRACKING FOR "VIEW" LABEL
+  // MOUSE TRACKING FOR "VIEW" LABEL (Desktop Only)
   useGSAP(() => {
     const xTo = gsap.quickTo(cursorLabelRef.current, "x", {
       duration: 0.4,
@@ -77,8 +77,8 @@ export default function GuestsDirectory() {
     });
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Only move if we are hovering
-      if (activeGuest) {
+      // Only move if we are hovering and on desktop (cursor label exists)
+      if (activeGuest && cursorLabelRef.current) {
         xTo(e.clientX);
         yTo(e.clientY);
       }
@@ -112,7 +112,7 @@ export default function GuestsDirectory() {
       onMouseLeave={() => setActiveGuest(null)}
     >
       {/* HEADER */}
-      <div className="mb-12 border-b border-[#F5EBEB]/20 pb-8 flex justify-between items-end">
+      <div className="mb-8 md:mb-12 border-b border-[#F5EBEB]/20 pb-8 flex justify-between items-end">
         <div>
           <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none">
             Guest Archive
@@ -128,40 +128,65 @@ export default function GuestsDirectory() {
       </div>
 
       {/* --- THE DIRECTORY LIST --- */}
-      {/* We use the 'group' class on the parent to handle the dimming effect purely with CSS.
-         When the parent is hovered (group-hover), ALL children fade out.
-         BUT the specific child being hovered (hover:) fades back in.
+      {/* UPDATED: Added mobile-specific scroll area using `h-[60vh] overflow-y-auto`
+         On desktop (md:), it reverts to `h-auto` and `overflow-visible`
       */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-1 w-full group">
-        {GUESTS.map((guest) => (
-          <div
-            key={guest.id}
-            onMouseEnter={() => setActiveGuest(guest)}
-            className="
+      <div className="h-[60vh] md:h-auto overflow-y-auto md:overflow-visible custom-scroll pr-2 md:pr-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-1 w-full group">
+          {GUESTS.map((guest) => (
+            <div
+              key={guest.id}
+              // UPDATED: Added onClick for mobile interaction
+              onClick={() => setActiveGuest(guest)}
+              onMouseEnter={() => setActiveGuest(guest)}
+              className="
               relative flex items-baseline justify-between py-3 border-b border-[#F5EBEB]/10 
-              transition-all duration-300
+              transition-all duration-300 cursor-pointer
               group-hover:opacity-20 hover:!opacity-100 hover:pl-4
             "
-          >
-            <span className="text-sm md:text-lg font-bold uppercase truncate pr-4">
-              {guest.name}
-            </span>
-            <span className="text-[10px] font-mono text-[#D5B4B4] uppercase tracking-wider whitespace-nowrap">
-              {guest.role}
-            </span>
-          </div>
-        ))}
+            >
+              <span className="text-sm md:text-lg font-bold uppercase truncate pr-4">
+                {guest.name}
+              </span>
+              <span className="text-[10px] font-mono text-[#D5B4B4] uppercase tracking-wider whitespace-nowrap">
+                {guest.role}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* --- THE FLOATING REVEAL IMAGE (FIXED CENTER) --- */}
-      {/* Only visible when a guest is active */}
+      {/* UPDATED: Added pointer-events-auto ONLY to the inner content when active so the close button works on mobile.
+         The container remains pointer-events-none so it doesn't block mouse movements on desktop.
+      */}
       <div
         className={`fixed inset-0 pointer-events-none z-50 flex items-center justify-center transition-opacity duration-300 ${activeGuest ? "opacity-100" : "opacity-0"}`}
       >
         {activeGuest && (
-          <div className="relative w-[300px] h-[400px] md:w-[450px] md:h-[600px] bg-black rounded-lg overflow-hidden shadow-2xl border-[6px] border-[#F5EBEB]">
+          <div className="relative pointer-events-auto w-[300px] h-[400px] md:w-[450px] md:h-[600px] bg-black rounded-lg overflow-hidden shadow-2xl border-[6px] border-[#F5EBEB]">
+            {/* UPDATED: Cross Button (Mobile Only visible via styling logic or just always there for UX) */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveGuest(null);
+              }}
+              className="md:hidden absolute top-4 right-4 z-20 bg-[#F5EBEB] text-[#867070] w-8 h-8 rounded-full flex items-center justify-center shadow-lg"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+              >
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+
             <Image
-              ref={imageRef as any} // TS casting for quick ref usage
+              ref={imageRef as any}
               src={activeGuest.image}
               alt={activeGuest.name}
               fill
@@ -169,7 +194,7 @@ export default function GuestsDirectory() {
             />
 
             {/* Overlay Info */}
-            <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/90 to-transparent">
+            <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/90 to-transparent pointer-events-none">
               <h3 className="text-3xl font-black text-[#F5EBEB] uppercase leading-none">
                 {activeGuest.name}
               </h3>
@@ -181,10 +206,10 @@ export default function GuestsDirectory() {
         )}
       </div>
 
-      {/* --- FLOATING CURSOR LABEL --- */}
+      {/* --- FLOATING CURSOR LABEL (Hidden on Mobile) --- */}
       <div
         ref={cursorLabelRef}
-        className={`fixed top-0 left-0 w-20 h-20 bg-[#F5EBEB] rounded-full flex items-center justify-center pointer-events-none z-[60] -translate-x-1/2 -translate-y-1/2 mix-blend-difference transition-opacity duration-200 ${activeGuest ? "opacity-100" : "opacity-0"}`}
+        className={`hidden md:flex fixed top-0 left-0 w-20 h-20 bg-[#F5EBEB] rounded-full items-center justify-center pointer-events-none z-[60] -translate-x-1/2 -translate-y-1/2 mix-blend-difference transition-opacity duration-200 ${activeGuest ? "opacity-100" : "opacity-0"}`}
       >
         <span className="text-[#867070] text-[10px] font-black uppercase tracking-widest">
           VIEW

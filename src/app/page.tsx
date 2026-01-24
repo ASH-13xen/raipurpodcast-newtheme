@@ -116,7 +116,13 @@ export default function Home() {
       <div
         ref={logoRef}
         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none flex items-center justify-center"
-        style={{ width: "850px", height: "850px" }}
+        // UPDATED: Responsive dimensions (80vw on mobile, 850px on desktop)
+        style={{
+          width: "80vw",
+          maxWidth: "850px",
+          height: "auto",
+          aspectRatio: "1/1",
+        }}
       >
         <Image
           src="/logo.png"
