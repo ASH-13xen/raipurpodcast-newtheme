@@ -10,7 +10,6 @@ const NAV_LINKS = [
   { name: "Team", href: "#team" },
   { name: "Episodes", href: "#episodes" },
   { name: "Guests", href: "#guests" },
-  { name: "Insights", href: "#insights" },
   { name: "Contact", href: "#contact" },
   { name: "Reviews", href: "#reviews" },
 ];
@@ -19,7 +18,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null); // New scope ref
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -32,7 +31,6 @@ export default function Navbar() {
           pointerEvents: "all",
         });
 
-        // Use fromTo to ensure it always resets correctly
         gsap.fromTo(
           ".mobile-link",
           { y: 50, opacity: 0 },
@@ -55,7 +53,7 @@ export default function Navbar() {
         });
       }
     },
-    { scope: containerRef, dependencies: [isMenuOpen] }, // Scoped to this component
+    { scope: containerRef, dependencies: [isMenuOpen] },
   );
 
   const handleScroll = (
@@ -73,14 +71,12 @@ export default function Navbar() {
 
   return (
     <div ref={containerRef}>
-      <nav className="fixed top-0 left-0 w-full z-[100] px-6 md:px-10 py-4 flex justify-between items-center transition-all duration-300 bg-[#F5EBEB]/80 backdrop-blur-md border-b border-[#867070]/10">
-        {/* LOGO - Changes color based on menu state */}
+      <nav className="fixed top-0 left-0 w-full z-[100] px-6 md:px-10 py-4 flex justify-between items-center transition-all duration-300 bg-[#0B1C2D]/80 backdrop-blur-md border-b border-[#1C1C1C]">
+        {/* LOGO - Gold for distinct branding */}
         <Link
           href="/"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className={`font-black text-xl tracking-tighter z-[110] transition-colors duration-500 ${
-            isMenuOpen ? "text-[#F5EBEB]" : "text-[#867070]"
-          }`}
+          className="font-black text-xl tracking-tighter z-[110] transition-colors duration-500 text-[#ecc646]"
         >
           RAIPUR PODCAST
         </Link>
@@ -92,26 +88,27 @@ export default function Navbar() {
               key={link.name}
               href={link.href}
               onClick={(e) => handleScroll(e, link.href)}
-              className="text-[#867070] text-xs font-bold uppercase tracking-widest hover:text-[#6d5a5a] relative group"
+              // UPDATED: Text is White, Hover opacity change instead of color change
+              className="text-[#FFFFFF] text-xs font-bold uppercase tracking-widest hover:opacity-70 relative group transition-opacity"
             >
               {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#867070] transition-all group-hover:w-full"></span>
+              {/* UPDATED: Underline is White */}
+              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#FFFFFF] transition-all group-hover:w-full"></span>
             </a>
           ))}
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-[#867070] text-[#F5EBEB] px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform"
+            // UPDATED: Button is White bg, Midnight Blue text (Clean look)
+            className="bg-[#FFFFFF] text-[#0B1C2D] px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 transition-transform hover:bg-[#D4AF37]"
           >
             Subscribe
           </button>
         </div>
 
-        {/* MOBILE BURGER - Changes color based on menu state */}
+        {/* MOBILE BURGER - Always White since bg is dark */}
         <button
-          className={`md:hidden z-[110] focus:outline-none transition-colors duration-500 ${
-            isMenuOpen ? "text-[#F5EBEB]" : "text-[#867070]"
-          }`}
+          className="md:hidden z-[110] focus:outline-none transition-colors duration-500 text-[#FFFFFF]"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <div
@@ -135,7 +132,8 @@ export default function Navbar() {
       {/* MOBILE FULLSCREEN MENU */}
       <div
         ref={menuRef}
-        className="fixed inset-0 bg-[#867070] z-[105] flex flex-col items-center justify-center pointer-events-none [clip-path:circle(0%_at_100%_0%)]"
+        // UPDATED: Menu Background -> Midnight Blue (Dark theme)
+        className="fixed inset-0 bg-[#0B1C2D] z-[105] flex flex-col items-center justify-center pointer-events-none [clip-path:circle(0%_at_100%_0%)]"
       >
         <div className="flex flex-col gap-6 md:gap-8 text-center px-4">
           {NAV_LINKS.map((link) => (
@@ -143,7 +141,8 @@ export default function Navbar() {
               key={link.name}
               href={link.href}
               onClick={(e) => handleScroll(e, link.href)}
-              className="mobile-link text-[#F5EBEB] text-3xl md:text-4xl font-black uppercase tracking-tighter hover:opacity-70 transition-opacity"
+              // UPDATED: Mobile Links -> White
+              className="mobile-link text-[#FFFFFF] text-3xl md:text-4xl font-black uppercase tracking-tighter hover:text-[#D4AF37] transition-colors"
             >
               {link.name}
             </a>
@@ -154,7 +153,8 @@ export default function Navbar() {
                 setIsMenuOpen(false);
                 setIsModalOpen(true);
               }}
-              className="bg-[#F5EBEB] text-[#867070] px-10 py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:scale-105 transition-transform"
+              // UPDATED: Mobile Button -> White bg, Midnight Blue text
+              className="bg-[#FFFFFF] text-[#0B1C2D] px-10 py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:scale-105 transition-transform"
             >
               Subscribe Now
             </button>

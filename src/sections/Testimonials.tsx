@@ -6,47 +6,9 @@ import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { reviewsList } from "@/data/testimonials"; // Import data
 
 gsap.registerPlugin(ScrollTrigger);
-
-const REVIEWS = [
-  {
-    id: 1,
-    name: "Aisha Verma",
-    role: "Architect",
-    quote:
-      "I never realized how much history was hidden in our daily commute. This podcast has completely changed how I see Raipur.",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    id: 2,
-    name: "Rohan Das",
-    role: "Filmmaker",
-    quote:
-      "The sound design is absolutely world-class. It feels less like a podcast and more like a movie for your ears.",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    name: "Priya Singh",
-    role: "Food Blogger",
-    quote:
-      "You guys captured the soul of the street food scene. I was drooling the entire time listening to the Telibandha episode.",
-    image:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    name: "Kabir Mehta",
-    role: "Musician",
-    quote:
-      "Finally, a platform that gives Chhattisgarh the artistic spotlight it deserves. Pure inspiration.",
-    image:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600&auto=format&fit=crop",
-  },
-];
 
 export default function Testimonials() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -56,7 +18,7 @@ export default function Testimonials() {
     () => {
       if (!sectionRef.current) return;
 
-      const totalCards = REVIEWS.length;
+      const totalCards = reviewsList.length;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -101,7 +63,7 @@ export default function Testimonials() {
 
       {/* CARD STACK CONTAINER */}
       <div className="relative w-[90vw] md:w-[600px] h-[400px] md:h-[500px] z-10 perspective-1000">
-        {REVIEWS.map((review, i) => (
+        {reviewsList.map((review, i) => (
           <div
             key={review.id}
             ref={(el) => {
@@ -110,7 +72,7 @@ export default function Testimonials() {
             // Absolute positioning stacks them
             className="absolute inset-0 w-full h-full bg-[#867070] rounded-3xl p-8 md:p-12 flex flex-col justify-between shadow-2xl border border-[#F5EBEB]/10 origin-bottom"
             // We reverse the z-index so the first item in array is on TOP
-            style={{ zIndex: REVIEWS.length - i }}
+            style={{ zIndex: reviewsList.length - i }}
           >
             {/* Quote Icon */}
             <div className="text-[#F5EBEB]/20">

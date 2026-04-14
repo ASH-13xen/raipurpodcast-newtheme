@@ -48,27 +48,24 @@ export default function SubscribeModal({
     }
   }, [isOpen]);
 
-  // REMOVED THE "if (!isOpen) return null" CHECK
-  // The modal is always in DOM now, just hidden via opacity/pointer-events
-
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[999] flex items-center justify-center bg-[#867070]/60 backdrop-blur-sm opacity-0 pointer-events-none px-4"
+      className="fixed inset-0 z-[999] flex items-center justify-center bg-[#0A2540]/60 backdrop-blur-sm opacity-0 pointer-events-none px-4"
       onClick={onClose}
     >
       <div
         ref={modalRef}
-        className="w-full max-w-md bg-[#F5EBEB] rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden opacity-0"
+        className="w-full max-w-md bg-white rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden opacity-0"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Decorative Background Element */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[#867070]/5 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-[#C5A059]/10 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
         {/* CLOSE BUTTON */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 text-[#867070] opacity-50 hover:opacity-100 transition-opacity"
+          className="absolute top-6 right-6 text-[#0A2540]/40 hover:text-[#0A2540] transition-colors"
         >
           <svg
             width="24"
@@ -84,11 +81,11 @@ export default function SubscribeModal({
 
         {/* CONTENT */}
         <div className="text-center mb-8">
-          <h3 className="text-[#867070] text-3xl font-black uppercase tracking-tight mb-2">
+          <h3 className="text-[#0A2540] text-3xl font-black uppercase tracking-tight mb-2">
             Daily Insights
           </h3>
-          <p className="text-[#867070]/70 text-sm font-medium">
-            Get the best of Raipur Podcast delivered to your inbox.
+          <p className="text-[#0A2540]/60 text-sm font-medium">
+            Get the best of Raipur Podcast delivered directly to your inbox.
           </p>
         </div>
 
@@ -101,20 +98,20 @@ export default function SubscribeModal({
             <input
               type="email"
               placeholder="Enter your email"
-              className="w-full bg-[#E4D0D0]/50 border border-[#867070]/20 rounded-xl px-5 py-4 text-[#867070] placeholder-[#867070]/40 outline-none focus:border-[#867070] focus:ring-1 focus:ring-[#867070] transition-all"
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-4 text-[#0A2540] placeholder-[#0A2540]/30 outline-none focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059] transition-all"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-[#867070] text-[#F5EBEB] font-bold uppercase tracking-widest py-4 rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-lg hover:shadow-xl"
+            className="w-full bg-[#C5A059] text-[#0A2540] font-black uppercase tracking-widest py-4 rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-lg hover:shadow-xl"
           >
             Subscribe
           </button>
         </form>
 
         {/* HELPER TEXT */}
-        <p className="mt-6 text-center text-[10px] text-[#867070]/40 uppercase tracking-widest font-bold flex items-center justify-center gap-2">
+        <p className="mt-6 text-center text-[10px] text-[#0A2540]/30 uppercase tracking-widest font-bold flex items-center justify-center gap-2">
           <svg
             width="12"
             height="12"
